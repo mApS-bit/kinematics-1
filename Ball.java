@@ -26,24 +26,27 @@ public class Ball extends Canvas {
         frame.setVisible(true);
 
     new Thread(() -> {
-        int stopValue = 0;
+        int stopUp = 0;
         while (true) {
             drawing.y += drawing.velocity;
 
-            if (drawing.y >= 300 || drawing.y <= stopValue) {
+            if (drawing.y >= 360 || drawing.y <= stopUp) {
                 drawing.velocity = -drawing.velocity;
-                if(stopValue >= 300){
-                    break;
+            
+                if (drawing.y >= 360) {
+                    drawing.y = 360; // It needs to keep moving
+                    drawing.velocity = (int)(drawing.velocity * 0.7); // lost of energy
+                    stopUp += 75;
+                    if (Math.abs(drawing.velocity) < 2){
+                        break;
+                    }
                 }
-            }
-            if(drawing.y >= 300){
-                stopValue += 50; 
             }
 
             drawing.repaint();
 
         try {
-            Thread.sleep(300);
+            Thread.sleep(30);
         } catch (InterruptedException e) {}
     }
         }).start();
@@ -56,7 +59,5 @@ public class Ball extends Canvas {
 
         g.drawImage(ballImage,175, y, 60, 60, null);
 
-        g.setColor(Color.BLACK);
-        g.fillRect(0, 350, 400, 50);
     }
 }
