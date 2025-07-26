@@ -60,6 +60,20 @@ public class Kinematics{
         this.aceletarion = a;
     }
 
+    public int postionX(int time){
+        int v_x = velocity;
+        int a_x = aceletarion;
+        return position.x + v_x * time + a_x * time * time;
+    }
+
+    public int freeFalling(int time){
+        
+        return position.y + velocity * time + gravity * time * time;
+    }
+
+    public int ballVelocityY(int time){
+        return velocity + aceletarion * time;
+    }
 
     public static void main(String[] args){
         System.out.println("Welcome to Kinematics!!");
