@@ -1,0 +1,63 @@
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+
+import javax.swing.JFrame;
+import javax.swing.ImageIcon;
+
+public class Ball extends Canvas {
+
+    private int y = 0;
+    private int velocity = 10;
+    private Image ballImage;
+
+    public Ball(){
+        ballImage = new ImageIcon("tennis-ball.png").getImage();
+        setSize(400, 400);
+    }
+
+    public static void main(String[] args){
+        JFrame frame = new JFrame("Ball");
+        Ball drawing = new Ball(); 
+        drawing.setSize(400, 400);
+        frame.add(drawing);
+        frame.pack();
+        frame.setVisible(true);
+
+    new Thread(() -> {
+        int stopUp = 0;
+        while (true) {
+            drawing.y += drawing.velocity;
+
+            if (drawing.y >= 360 || drawing.y <= stopUp) {
+                drawing.velocity = -drawing.velocity;
+            
+                if (drawing.y >= 360) {
+                    drawing.y = 360; // It needs to keep moving
+                    drawing.velocity = (int)(drawing.velocity * 0.7); // lost of energy
+                    stopUp += 75;
+                    if (Math.abs(drawing.velocity) < 2){
+                        break;
+                    }
+                }
+            }
+
+            drawing.repaint();
+
+        try {
+            Thread.sleep(30);
+        } catch (InterruptedException e) {}
+    }
+        }).start();
+    }
+
+    @Override
+    public void paint(Graphics g){
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, getWidth(), getHeight());
+
+        g.drawImage(ballImage,175, y, 60, 60, null);
+
+    }
+}
